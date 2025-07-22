@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>🔥 Get Free Airdrop - TEST ONLY</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+    button { padding: 10px 20px; font-size: 18px; }
+  </style>
+</head>
+<body>
+
+  <h1>🚀 Claim Your Airdrop</h1>
+  <p>Connect your wallet to receive 2000 $FAKE tokens</p>
+  <button onclick="connectWallet()">Connect Wallet</button>
+  <p id="status"></p>
+
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.6.2/dist/ethers.umd.min.js"></script>
+  <script>
+    async function connectWallet() {
+      const status = document.getElementById("status");
+
+      if (window.ethereum) {
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const accounts = await provider.send("eth_requestAccounts", []);
+        const address = accounts[0];
+        status.innerText = "✅ Connected: " + address;
+
+        // Now try to sign message (fake claim)
+        const signer = await provider.getSigner();
+        try {
+          const message = "Claim 2000 $FAKE Airdrop - Confirm you are the owner.";
+          const signature = await signer.signMessage(message);
+          status.innerText = "✅ Message signed. Signature: " + signature.substring(0, 30) + "...";
+          console.log("Signed by user:", signature);
+        } catch (err) {
+          status.innerText = "❌ User rejected signing.";
+          console.error(err);
+        }
+
+      } else {
+        alert("Please install MetaMask!");
+      }
+    }
+  </script>
+</body>
+</html>
